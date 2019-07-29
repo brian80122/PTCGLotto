@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTCGLottoBackend", "PTCGLottoBackend\PTCGLottoBackend.csproj", "{78DF76B2-2CD0-48EA-B813-EDE6324F1930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTCGLottoBackend", "PTCGLottoBackend\PTCGLottoBackend.csproj", "{78DF76B2-2CD0-48EA-B813-EDE6324F1930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTCGLottoLibrary", "PTCGLottoLibrary\PTCGLottoLibrary.csproj", "{E1D10AD2-C940-4030-A4A3-B16CC315BCEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTCGLottoLibrary", "PTCGLottoLibrary\PTCGLottoLibrary.csproj", "{E1D10AD2-C940-4030-A4A3-B16CC315BCEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTCGLottoLibraryUnitTest", "PTCGLottoLibraryUnitTest\PTCGLottoLibraryUnitTest.csproj", "{01163573-C300-4887-BE2C-EF05A9E22105}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTCGLottoLibraryUnitTest", "PTCGLottoLibraryUnitTest\PTCGLottoLibraryUnitTest.csproj", "{A97B362F-DE1D-42C0-ABD1-CE6C4CA08F9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{E1D10AD2-C940-4030-A4A3-B16CC315BCEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1D10AD2-C940-4030-A4A3-B16CC315BCEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1D10AD2-C940-4030-A4A3-B16CC315BCEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01163573-C300-4887-BE2C-EF05A9E22105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01163573-C300-4887-BE2C-EF05A9E22105}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01163573-C300-4887-BE2C-EF05A9E22105}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01163573-C300-4887-BE2C-EF05A9E22105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A97B362F-DE1D-42C0-ABD1-CE6C4CA08F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97B362F-DE1D-42C0-ABD1-CE6C4CA08F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97B362F-DE1D-42C0-ABD1-CE6C4CA08F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97B362F-DE1D-42C0-ABD1-CE6C4CA08F9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
