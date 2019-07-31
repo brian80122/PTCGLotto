@@ -9,10 +9,13 @@ namespace PTCGLottoLibrary.Models.CodeFirsts
     public class CoinTradeHistory
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-        public long ProviderId { get; set; }
-        public long ReceiverId { get; set; }
+        public int Id { get; set; }
         public int Amount { get; set; }
-        public int StatusId { get; set; }
+
+        public string Memo { get; set; }
+
+        public  User User { get; set; }
+       
+        public  Status Status { get; set; }
     }
 }
