@@ -4,15 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
     /// <summary>
-    /// Cards
+    /// Card Expansion, like Unbroken Bonds(SM10)
     /// </summary>
-    public class Card
+    public class Expansion
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int No { get; set; }
         public string Name { get; set; }
+        public int Price { get; set; }
         public Series Series { get; set; }
-        public  CardType CardType { get; set; }
     }
 }

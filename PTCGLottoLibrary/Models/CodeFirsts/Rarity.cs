@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
     /// <summary>
-    /// Cards
+    /// card rarity, like Common, Uncommon, Rare
     /// </summary>
-    public class Card
+    public class Rarity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int No { get; set; }
         public string Name { get; set; }
-        public Series Series { get; set; }
-        public  CardType CardType { get; set; }
+        public int Value { get; set; }
     }
 }

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
+    /// <summary>
+    /// CardType like Pokémon ,Trainer, Energy
+    /// </summary>
     public class CardType
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
+    /// <summary>
+    /// Users Card
+    /// </summary>
     public class Collection
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

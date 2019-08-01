@@ -6,6 +6,9 @@ using System.Text;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
+    /// <summary>
+    /// trade status
+    /// </summary>
     public class Status
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

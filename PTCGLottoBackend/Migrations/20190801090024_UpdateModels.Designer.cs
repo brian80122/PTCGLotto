@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PTCGLottoLibrary.Models.CodeFirsts;
 
 namespace PTCGLottoBackend.Migrations
 {
     [DbContext(typeof(PTCGLottoContext))]
-    partial class PTCGLottoContextModelSnapshot : ModelSnapshot
+    [Migration("20190801090024_UpdateModels")]
+    partial class UpdateModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,23 +165,6 @@ namespace PTCGLottoBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CardTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Pokémon"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Trainer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Energy"
-                        });
                 });
 
             modelBuilder.Entity("PTCGLottoLibrary.Models.CodeFirsts.CoinTradeHistory", b =>
@@ -224,60 +209,6 @@ namespace PTCGLottoBackend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Collections");
-                });
-
-            modelBuilder.Entity("PTCGLottoLibrary.Models.CodeFirsts.Expansion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Price");
-
-                    b.Property<int?>("SeriesId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SeriesId");
-
-                    b.ToTable("Expansions");
-                });
-
-            modelBuilder.Entity("PTCGLottoLibrary.Models.CodeFirsts.Rarity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Value");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Rarities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Common",
-                            Value = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Uncommon",
-                            Value = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Rare",
-                            Value = 3
-                        });
                 });
 
             modelBuilder.Entity("PTCGLottoLibrary.Models.CodeFirsts.Series", b =>
@@ -435,13 +366,6 @@ namespace PTCGLottoBackend.Migrations
                     b.HasOne("PTCGLottoLibrary.Models.CodeFirsts.User", "User")
                         .WithMany("Cards")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("PTCGLottoLibrary.Models.CodeFirsts.Expansion", b =>
-                {
-                    b.HasOne("PTCGLottoLibrary.Models.CodeFirsts.Series", "Series")
-                        .WithMany()
-                        .HasForeignKey("SeriesId");
                 });
 #pragma warning restore 612, 618
         }

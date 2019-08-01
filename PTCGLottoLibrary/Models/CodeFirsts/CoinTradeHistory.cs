@@ -6,6 +6,9 @@ using System.Text;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {
+    /// <summary>
+    /// Coin TrandeHistory
+    /// </summary>
     public class CoinTradeHistory
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
