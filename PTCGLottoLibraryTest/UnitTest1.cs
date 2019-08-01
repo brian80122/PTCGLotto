@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
-namespace PTCGLottoLibraryUnitTest
+namespace PTCGLottoLibraryTest
 {
     [TestClass]
     public class UnitTest1
@@ -8,6 +9,7 @@ namespace PTCGLottoLibraryUnitTest
         [TestMethod]
         public void TestMethod1()
         {
+            throw new NotImplementedException();
         }
     }
 }
