@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using PTCGLottoLibrary.Models.CodeFirsts;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -45,12 +46,12 @@ namespace PTCGLottoBackend
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
-                //options.Password.RequireDigit = true;
-                //options.Password.RequireLowercase = true;
-                //options.Password.RequireNonAlphanumeric = true;
-                //options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequiredUniqueChars = 0;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -62,11 +63,7 @@ namespace PTCGLottoBackend
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
-
-
-            services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+         
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -94,7 +91,9 @@ namespace PTCGLottoBackend
                 c.IncludeXmlComments(xmlPath);
             });
 
-          
+            services.AddMvc()
+                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
