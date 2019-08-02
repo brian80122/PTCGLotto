@@ -12,7 +12,14 @@ namespace PTCGLottoLibrary.Models.CodeFirsts
         public int Id { get; set; }
         public int No { get; set; }
         public string Name { get; set; }
-        public Series Series { get; set; }
+
+        public int ExpansionId { get; set; }
+        public Expansion Expansion { get; set; }
+
+        public int CardTypeId { get; set; }
         public  CardType CardType { get; set; }
+
+        public int RarityId { get; set; }
+        public Rarity Rarity { get; set; }
     }
 }
