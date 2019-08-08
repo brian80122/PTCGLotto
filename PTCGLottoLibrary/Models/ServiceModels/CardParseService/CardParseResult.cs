@@ -12,10 +12,13 @@ namespace PTCGLottoLibrary.Models.ServiceModels.CardParseService
 
     public class TempCard
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Expansion { get; set; }
-        public string CardType { get; set; }
+        public string[] CardType { get; set; }
         public string Rarity { get; set; }
         public int No { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

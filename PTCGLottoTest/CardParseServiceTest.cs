@@ -65,7 +65,7 @@ namespace PTCGLottoTest
             var firstCard = result.Cards[0];
             Assert.IsTrue(
                           firstCard.Name == "Pheromosa & Buzzwole-GX" &&
-                          firstCard.CardType == "Pokemon" &&
+                          firstCard.CardType.Contains("Pokemon") &&
                           firstCard.No == 1 &&
                           firstCard.Rarity == "Rare" &&
                           firstCard.Expansion == "Unbroken Bonds"
@@ -74,7 +74,7 @@ namespace PTCGLottoTest
             var secondCard = result.Cards[1];
             Assert.IsTrue(
                           secondCard.Name == "Chip-Chip Ice Axe" &&
-                          secondCard.CardType == "Item" &&
+                          secondCard.CardType.Contains("Item") &&
                           secondCard.No == 165 &&
                           secondCard.Rarity == "Uncommon" &&
                           secondCard.Expansion == "Unbroken Bonds"
@@ -83,7 +83,7 @@ namespace PTCGLottoTest
             var thirdCard = result.Cards[2];
             Assert.IsTrue(
                          thirdCard.Name == "Giovanni's Exile" &&
-                         thirdCard.CardType == "Supporter" &&
+                         thirdCard.CardType.Contains("Supporter") &&
                          thirdCard.No == 174 &&
                          thirdCard.Rarity == "Uncommon" &&
                          thirdCard.Expansion == "Unbroken Bonds"

@@ -98,7 +98,7 @@ namespace PTCGLottoLibrary.Services
                     cardType = "Stadium";
                 }
 
-                tempCard.CardType = cardType;
+                tempCard.CardType = new string[] { cardType };
 
                 var cardRarity = cardData[5];
                 if (cardRarity.Contains("Rare"))

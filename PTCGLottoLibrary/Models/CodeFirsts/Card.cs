@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
@@ -8,7 +9,7 @@ namespace PTCGLottoLibrary.Models.CodeFirsts
     /// </summary>
     public class Card
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int Id { get; set; }
         public int No { get; set; }
         public string Name { get; set; }
@@ -16,10 +17,11 @@ namespace PTCGLottoLibrary.Models.CodeFirsts
         public int ExpansionId { get; set; }
         public Expansion Expansion { get; set; }
 
-        public int CardTypeId { get; set; }
-        public  CardType CardType { get; set; }
-
         public int RarityId { get; set; }
         public Rarity Rarity { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public virtual ICollection<CardCardType> CardCardTypes { get; set; }
     }
 }
