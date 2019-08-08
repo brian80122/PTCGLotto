@@ -23,9 +23,20 @@ namespace PTCGLottoCrawler
                 { 142, "SUM & MOON" },
                 { 143, "SUM & MOON" }
             };
+            var parseResults = new List<CardParseResult>();
             foreach (var parseingReq in parseingDictionary)
             {
-                ParseCards(parseingReq.Key);
+                var parseResult = ParseCards(parseingReq.Key);
+                parseResult.Series = parseingReq.Value;
+
+                if (parseResults.Count > 0 && parseResults.Any(c => c.Series == parseResult.Series))
+                {
+                    var sameSeries = parseResults.FirstOrDefault(c => c.Series == parseResult.Series);
+                }
+                else
+                {
+                    parseResults.Add(parseResult);
+                }
             }
         }
 

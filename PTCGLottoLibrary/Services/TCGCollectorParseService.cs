@@ -70,6 +70,10 @@ namespace PTCGLottoLibrary.Services
         //取得 imageUrl
         public Dictionary<int, string> ParseImageHtml(string sourceHtml)
         {
+            /*todo 處理編號從 alt 取
+             <img src="https://cdn.tcgcollector.com/content/card-images/unified-minds/254-236-13139-5c4bd0e4af.jpg"
+                                alt="Tag Switch (Unified Minds 254/236)">
+             */
             var config = Configuration.Default;
             var context = BrowsingContext.New(config);
             var document = context.OpenAsync(req => req.Content(sourceHtml))
