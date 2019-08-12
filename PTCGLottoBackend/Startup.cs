@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using PTCGLottoLibrary;
+using PTCGLottoLibrary.Interfaces;
 using PTCGLottoLibrary.Models.CodeFirsts;
 using PTCGLottoLibrary.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -95,6 +96,7 @@ namespace PTCGLottoBackend
 
             //Di
             services.AddTransient<ICardParseSerivce, CardParseSerivce>();
+            services.AddTransient<IPTCGService, PTCGService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
