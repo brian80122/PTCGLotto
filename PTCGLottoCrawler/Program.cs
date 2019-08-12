@@ -1,10 +1,16 @@
-﻿using AngleSharp;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PTCGLottoCrawler.Models;
+using PTCGLottoCrawler.Extensions;
 using PTCGLottoLibrary.Interfaces;
+using PTCGLottoLibrary.Models;
+using PTCGLottoLibrary.Models.CodeFirsts;
 using PTCGLottoLibrary.Models.ServiceModels.CardParseService;
 using PTCGLottoLibrary.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,8 +19,10 @@ namespace PTCGLottoCrawler
 {
     class Program
     {
-        static IHttpClientFactory  _httpClientFactory { get; set; }
+        static IHttpClientFactory _httpClientFactory { get; set; }
         static ITCGCollectorParseService _tCGCollectorParseService { get; set; }
+        static PTCGLottoContext _pTCGLottoContext { get; set; }
+
         static void Main(string[] args)
         {
             SetUp();
@@ -23,32 +31,128 @@ namespace PTCGLottoCrawler
                 { 142, "SUM & MOON" },
                 { 143, "SUM & MOON" }
             };
+
+            //parseCards
             var parseResults = new List<CardParseResult>();
             foreach (var parseingReq in parseingDictionary)
             {
                 var parseResult = ParseCards(parseingReq.Key);
                 parseResult.Series = parseingReq.Value;
+                parseResults.Add(parseResult);
+            }
 
-                if (parseResults.Count > 0 && parseResults.Any(c => c.Series == parseResult.Series))
+            //InsertToDb
+            try
+            {
+                var serieses = parseResults.Select(c => c.Series)
+                                           .Distinct();
+                foreach (var series in serieses)
                 {
-                    var sameSeries = parseResults.FirstOrDefault(c => c.Series == parseResult.Series);
+                    if (!_pTCGLottoContext.Serieses.Any(c => c.Name == series))
+                    {
+                        _pTCGLottoContext.Serieses.Add(new Series()
+                        {
+                            Name = series
+                        });
+                    }
                 }
-                else
+                _pTCGLottoContext.SaveChanges();
+
+                var expansions = parseResults.SelectMany(pr => pr.Cards.Select(c => new Expansion()
                 {
-                    parseResults.Add(parseResult);
+                    Series = _pTCGLottoContext.Serieses.FirstOrDefault(s => s.Name == pr.Series),
+                    Name = c.Expansion
+                })).Distinct(c => c.Name);
+
+                foreach (var expansion in expansions)
+                {
+                    if (!_pTCGLottoContext.Expansions.Any(c => c.Name == expansion.Name && c.Series == expansion.Series))
+                    {
+                        expansion.Price = 100;
+                        _pTCGLottoContext.Expansions.Add(expansion);
+                    }
                 }
+                _pTCGLottoContext.SaveChanges();
+
+                var cardTypes = parseResults.SelectMany(pr => pr.Cards
+                                                                .SelectMany(c => c.CardType
+                                                                              .Select(ct => new CardType()
+                                                                              {
+                                                                                  Name = ct
+                                                                              })
+                                                                       )
+                                                      )
+                                            .Distinct(c => c.Name);
+
+                foreach (var cardType in cardTypes)
+                {
+                    if (!_pTCGLottoContext.CardTypes.Any(c => c.Name == cardType.Name))
+                    {
+                        _pTCGLottoContext.CardTypes.Add(cardType);
+                    }
+                }
+                _pTCGLottoContext.SaveChanges();
+
+                var realities = parseResults.SelectMany(pr => pr.Cards
+                                                                .Select(c => new Rarity()
+                                                                {
+                                                                    Name = c.Rarity
+                                                                })
+                                                       ).Distinct(c => c.Name);
+                foreach (var reality in realities)
+                {
+                    if (!_pTCGLottoContext.Rarities.Any(c => c.Name == reality.Name))
+                    {
+                        _pTCGLottoContext.Rarities.Add(reality);
+                    }
+                }
+                _pTCGLottoContext.SaveChanges();
+
+
+                var cards = parseResults.SelectMany(pr => pr.Cards.Select(c => new Card()
+                {
+                    Expansion = _pTCGLottoContext.Expansions.FirstOrDefault(e => e.Name == c.Expansion && e.Series.Name == pr.Series),
+                    ImageUrl = c.ImageUrl,
+                    IdentityId = c.Id,
+                    Name = c.Name,
+                    No = c.No,
+                    Rarity = _pTCGLottoContext.Rarities.FirstOrDefault(r => r.Name == c.Rarity),
+                    CardCardTypes = c.CardType.Select(ct => new CardCardType()
+                    {
+                        CardId = c.Id,
+                        CardTypeId = _pTCGLottoContext.CardTypes
+                                                      .FirstOrDefault(pct => pct.Name == ct)
+                                                      .Id
+                    }).ToList()
+                }));
+                foreach (var card in cards)
+                {
+                    if (!_pTCGLottoContext.Cards.Any(c => c.IdentityId == card.IdentityId))
+                    {
+                        _pTCGLottoContext.Cards.Add(card);
+                    }
+                }
+                _pTCGLottoContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
 
         private static void SetUp()
         {
+
             var servicesProvider = new ServiceCollection()
                                        .AddHttpClient()
                                        .AddSingleton<ITCGCollectorParseService, TCGCollectorParseService>()
+                                       .AddDbContext<PTCGLottoContext>(options => options.UseSqlServer(ReadFromAppSettings().Get<AppSettingsModel>()
+                                                                                                                            .ConnectionString))
                                        .BuildServiceProvider();
             _httpClientFactory = servicesProvider.GetRequiredService<IHttpClientFactory>();
             _tCGCollectorParseService = servicesProvider.GetRequiredService<ITCGCollectorParseService>();
+            _pTCGLottoContext = servicesProvider.GetRequiredService<PTCGLottoContext>();
         }
 
         private static async Task<string> CalltcgcollectorWebsite(int expansionNo, bool displayImage = false)
@@ -87,27 +191,12 @@ namespace PTCGLottoCrawler
             return cardParseResult;
         }
 
-        //private static void ParseImage(int expansionNo)
-        //{
-        //    var content = CalltcgcollectorWebsite(expansionNo, true)
-        //                  .Result;
-        //    #region AngleSharp
-        //    var config = Configuration.Default;
-        //    var context = BrowsingContext.New(config);
-        //    var document = context.OpenAsync(req => req.Content(content))
-        //                          .Result;
-        //    var found = document.All
-        //                        .Where(c => c.LocalName == "article" && c.ClassName.Contains("card-image-container"))
-        //                        .ToList();
-        //    var imageUrls = found.Select(c => c.QuerySelector("img")
-        //                                       .GetAttribute("src"))
-        //                         .Select(u => new
-        //                         {
-        //                             Key = $"{u.Split("/").Last().Split("-")[0]}",
-        //                             Url = u
-        //                         })
-        //                         .ToList();
-        //    #endregion
-        //}
+        public static IConfigurationRoot ReadFromAppSettings()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false)
+                .Build();
+        }
     }
 }

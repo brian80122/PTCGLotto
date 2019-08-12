@@ -45,9 +45,17 @@ namespace PTCGLottoLibrary.Services
                                          .QuerySelector("span")
                                          .InnerHtml
                                          .Split(new string[] { ", " }, StringSplitOptions.None)
-                                         .Select(c=>c.Replace("\n","")
-                                                     .Trim())
+                                         .Select(c => c.Replace("\n", "")
+                                                       .Trim())
                                          .ToArray();
+                cardTypes = cardTypes.Select(c =>
+                {
+                    if (c.Contains("-"))
+                    {
+                        c = c.Replace(" ", "");
+                    }
+                    return c;
+                }).ToArray();
                 var rarity = childDivs.FirstOrDefault(c => c.ClassList.Contains("card-list-item-rarity"))
                                       .QuerySelector("span")
                                       .InnerHtml;
@@ -69,11 +77,7 @@ namespace PTCGLottoLibrary.Services
 
         //取得 imageUrl
         public Dictionary<int, string> ParseImageHtml(string sourceHtml)
-        {
-            /*todo 處理編號從 alt 取
-             <img src="https://cdn.tcgcollector.com/content/card-images/unified-minds/254-236-13139-5c4bd0e4af.jpg"
-                                alt="Tag Switch (Unified Minds 254/236)">
-             */
+        {   
             var config = Configuration.Default;
             var context = BrowsingContext.New(config);
             var document = context.OpenAsync(req => req.Content(sourceHtml))
@@ -81,16 +85,24 @@ namespace PTCGLottoLibrary.Services
             var found = document.All
                                 .Where(c => c.LocalName == "article" && c.ClassName.Contains("card-image-container"))
                                 .ToList();
-            var imageUrls = found.Select(c => c.QuerySelector("img")
-                                               .GetAttribute("src"))
-                                 .Select(u => new
-                                 {
-                                     Key = int.Parse(u.Split('/').Last().Split('-')[0]),
-                                     Url = u
-                                 })
-                                 .ToDictionary(c => c.Key, c => c.Url);
 
-            return imageUrls;
+            var imageUrlDictionary = new Dictionary<int, string>();
+            foreach (var element in found)
+            {
+                var url = element.QuerySelector("img")
+                                 .GetAttribute("src");
+                var key = element.QuerySelector("a")
+                                 .GetAttribute("href")
+                                 .Split('-')
+                                 .Reverse()
+                                 .Skip(1)
+                                 .Take(1)
+                                 .First();
+
+                imageUrlDictionary.Add(int.Parse(key), url);
+            }
+
+            return imageUrlDictionary;
         }
     }
 }

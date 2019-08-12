@@ -11,6 +11,14 @@ namespace PTCGLottoLibrary.Models.CodeFirsts
     {
         [Key]
         public int Id { get; set; }
+        /// <summary>
+        /// IdentityId in Total PTCG Cards
+        /// </summary>
+        public int IdentityId { get; set; }
+
+        /// <summary>
+        /// No in this explansion
+        /// </summary>
         public int No { get; set; }
         public string Name { get; set; }
 

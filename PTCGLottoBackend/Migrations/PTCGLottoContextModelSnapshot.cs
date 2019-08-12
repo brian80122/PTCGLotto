@@ -137,6 +137,8 @@ namespace PTCGLottoBackend.Migrations
 
                     b.Property<int>("ExpansionId");
 
+                    b.Property<int>("IdentityId");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("Name");

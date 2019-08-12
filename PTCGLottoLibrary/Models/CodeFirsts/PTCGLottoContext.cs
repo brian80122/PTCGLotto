@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PTCGLottoLibrary.Services;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PTCGLottoLibrary.Models.CodeFirsts
 {

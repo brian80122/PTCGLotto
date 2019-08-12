@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PTCGLottoBackend.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -262,10 +262,12 @@ namespace PTCGLottoBackend.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdentityId = table.Column<int>(nullable: false),
                     No = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     ExpansionId = table.Column<int>(nullable: false),
-                    RarityId = table.Column<int>(nullable: false)
+                    RarityId = table.Column<int>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

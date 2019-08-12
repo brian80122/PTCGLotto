@@ -10,8 +10,8 @@ using PTCGLottoLibrary.Models.CodeFirsts;
 namespace PTCGLottoBackend.Migrations
 {
     [DbContext(typeof(PTCGLottoContext))]
-    [Migration("20190808031006_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190812073023_InitCreate")]
+    partial class InitCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,6 +138,10 @@ namespace PTCGLottoBackend.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ExpansionId");
+
+                    b.Property<int>("IdentityId");
+
+                    b.Property<string>("ImageUrl");
 
                     b.Property<string>("Name");
 
