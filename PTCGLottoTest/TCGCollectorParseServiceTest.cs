@@ -4,6 +4,7 @@ using PTCGLottoLibrary.Interfaces;
 using PTCGLottoLibrary.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PTCGLottoTest
@@ -56,10 +57,10 @@ namespace PTCGLottoTest
                           compareObj.Name == "Pheromosa & Buzzwole-GX" &&
                           compareObj.No == 1 &&
                           compareObj.Rarity == "Ultra Rare" &&
-                          compareObj.Expansion == "Unbroken Bonds" &&
-                          Array.Exists(compareObj.CardType, c => c == "Pokémon TAG TEAM") &&
-                          Array.Exists(compareObj.CardType, c => c == "Pokémon-GX") &&
-                          Array.Exists(compareObj.CardType, c => c == "Ultra Beast-Basic"));
+                          compareObj.Expansion == "Unbroken Bonds");
+            Assert.IsTrue(compareObj.CardType.Contains("Pokémon TAG TEAM"));
+            Assert.IsTrue(compareObj.CardType.Contains("Pokémon-GX"));
+            Assert.IsTrue(compareObj.CardType.Contains("UltraBeast-Basic"));
         }
     }
 }

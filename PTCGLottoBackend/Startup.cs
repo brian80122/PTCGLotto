@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using isRock.LineBot;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,32 +33,6 @@ namespace PTCGLottoBackend
             {
                 options.UseSqlServer(Configuration.GetConnectionString("PTCGLottoDbConnection"),
                                      b => b.MigrationsAssembly("PTCGLottoBackend"));
-            });
-
-            //identity
-            services.AddIdentity<User, IdentityRole>()
-                    .AddEntityFrameworkStores<PTCGLottoContext>()
-                    .AddDefaultTokenProviders();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 0;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
             });
          
             services.AddSwaggerGen(c =>
@@ -97,6 +71,11 @@ namespace PTCGLottoBackend
             //Di
             services.AddTransient<ICardParseSerivce, CardParseSerivce>();
             services.AddTransient<IPTCGService, PTCGService>();
+            services.AddTransient(ctx =>
+            {
+               var token =  Configuration.GetValue(typeof(string), "LineChannelToken") as string;
+                return new Bot(token);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
